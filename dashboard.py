@@ -26,7 +26,6 @@ class Node(object):
         return {'id': self.node_id, 'mem': self.mem_total, 'cpu': self.cpu_total}
 
 class NodeStatisticsResource(Resource):
-
     def mesos_endpoint(self):
         return MESOS + "/state.json"
 
@@ -49,9 +48,6 @@ class NodeStatisticsResource(Resource):
 
 app = Flask(__name__)
 api = Api(app)
-
 api.add_resource(NodeStatisticsResource, '/api/nodes/stats')
-
-
 if __name__ == '__main__':
     app.run(debug=True)
