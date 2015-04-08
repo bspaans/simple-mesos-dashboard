@@ -3,7 +3,7 @@
 ![Dashboard](/screenshot/screenshot.png?raw=true "Screenshot")
 
 
-## Docker
+## Run in Docker
 
 ```
 docker build -t mesos-dashboard .
