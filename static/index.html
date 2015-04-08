@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app='mesos-dashboard'>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,25 +15,33 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="/static/lib/angular/angular.js"></script>
   </head>
-  <body>
+  <body ng-controller='dashboardController'>
 
     <nav class='navbar navbar-default '>
       <div class='container-fluid'>
 	      <div class='navbar-header'>
-		<a class='navbar-brand' href='#'>Alright</a>
+		<a class='navbar-brand' href='#'>Mesos Dashboard</a>
 	      </div>
 	</div>
 
     </nav>
 
     <div class='container'>
-
+      <div class='row'>
+        <div class='col-md-3' ng-repeat='s in stats'>
+	  <h4>{{s.id}}</h4>
+	  <b>CPU: </b>
+	  <span class='cpu'>{{s.cpu}}</span><p/>
+	  <b>Mem: </b>
+	  <span class='memory'>{{s.mem}}</span><p/>
+	</div>
+      </div>
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/static/lib/jquery/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/static/lib/bootstrap/bootstrap.js"></script>
+    <script src="/static/controllers.js"></script>
   </body>
 </html>
