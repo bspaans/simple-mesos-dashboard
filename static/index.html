@@ -8,6 +8,7 @@
 
     <!-- Bootstrap -->
     <link href="/static/lib/bootstrap/bootstrap.css" rel="stylesheet">
+    <link href="/static/custom.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,12 +31,12 @@
 
     <div class='container'>
       <div class='row'>
-        <div class='col-md-3' ng-repeat='s in stats'>
-	  <h4>{{s.id}}</h4>
+        <div class='col-md-3 mesos-node' ng-repeat='s in stats'>
+	  <h4>{{s.hostname}}</h4>
 	  <b>CPU: </b>
-	  <span class='cpu'>{{s.cpu}}</span><p/>
+	  <span class='cpu'>{{s.cpu | number: 2}} / {{s.max_cpu}}</span><p/>
 	  <b>Mem: </b>
-	  <span class='memory'>{{s.mem}}</span><p/>
+	  <span class='memory'>{{s.mem}} / {{s.max_mem}}</span><p/>
 	</div>
       </div>
     </div>

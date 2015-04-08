@@ -1,0 +1,7 @@
+.mesos-node {
+  min-height: 250px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin: 10px;
+}

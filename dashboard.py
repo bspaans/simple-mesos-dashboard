@@ -22,15 +22,23 @@ class Node(object):
         self.mem_total += mem 
         self.resources.append((framework_name, cpu, mem))
 
+    def set_hostname(self, hostname):
+        self.hostname = hostname
+
+    def set_max_resources(self, resources):
+        self.max_mem = resources.get('mem', 0.0)
+        self.max_cpu = resources.get('cpus', 0.0)
+
     def to_dict(self):
-        return {'id': self.node_id, 'mem': self.mem_total, 'cpu': self.cpu_total}
+        return {'id': self.node_id, 'hostname': self.hostname,
+            'mem': self.mem_total, 'cpu': self.cpu_total,
+            'max_cpu': self.max_cpu, 'max_mem': self.max_mem}
 
 class NodeStatisticsResource(Resource):
     def mesos_endpoint(self):
         return MESOS + "/state.json"
 
-    def process_frameworks(self, frameworks):
-        nodes = {}
+    def process_frameworks(self, nodes, frameworks):
         for framework in frameworks:
             name = framework['name']
             for task in framework['tasks']:
@@ -40,10 +48,21 @@ class NodeStatisticsResource(Resource):
                 nodes[node_id] = node
         return map(lambda n: n.to_dict(), nodes.values())
 
+    def process_slaves(self, slaves):
+        nodes = {}
+        for slave in slaves:
+            node_id = slave['id']
+            node = nodes.get(node_id, Node(node_id))
+            node.set_max_resources(slave['resources'])
+            node.set_hostname(slave['hostname'])
+            nodes[node_id] = node
+        return nodes
+
     def get(self):
         payload = requests.get(self.mesos_endpoint()).text
         json_payload = json.loads(payload)
-        return self.process_frameworks(json_payload['frameworks'])
+        nodes = self.process_slaves(json_payload['slaves'])
+        return self.process_frameworks(nodes, json_payload['frameworks'])
 
 
 app = Flask(__name__)
