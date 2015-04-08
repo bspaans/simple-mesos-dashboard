@@ -1,7 +1,4 @@
 **Simple Mesos Dashboard**
 
+![Dashboard](/screenshot/screenshot.png?raw=true "Screenshot")
 
-
-npm install bower
-bower install 
-grunt install
