@@ -64,6 +64,11 @@ class NodeStatisticsResource(Resource):
         nodes = self.process_slaves(json_payload['slaves'])
         return self.process_frameworks(nodes, json_payload['frameworks'])
 
+app = Flask(__name__)
+api = Api(app)
+api.add_resource(NodeStatisticsResource, '/api/nodes/stats')
+
+
 @app.route("/")
 def index():
     f = open("static/index.html")
@@ -71,8 +76,6 @@ def index():
     f.close()
     return index, 200
 
-app = Flask(__name__)
-api = Api(app)
-api.add_resource(NodeStatisticsResource, '/api/nodes/stats')
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
