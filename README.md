@@ -1,9 +1,9 @@
-***Simple Mesos Dashboard***
+#Simple Mesos Dashboard
 
 ![Dashboard](/screenshot/screenshot.png?raw=true "Screenshot")
 
 
-** Docker **
+## Docker
 
 `
 docker build -t mesos-dashboard .
