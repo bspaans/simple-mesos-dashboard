@@ -64,6 +64,12 @@ class NodeStatisticsResource(Resource):
         nodes = self.process_slaves(json_payload['slaves'])
         return self.process_frameworks(nodes, json_payload['frameworks'])
 
+@app.route("/")
+def index():
+    f = open("static/index.html")
+    index = f.read()
+    f.close()
+    return index, 200
 
 app = Flask(__name__)
 api = Api(app)
