@@ -32,7 +32,8 @@
     <div class='container'>
       <div class='row'>
         <div class='col-md-3 mesos-node' ng-repeat='s in stats'>
-	  <h4>{{s.hostname}}</h4>
+	  <h3>{{s.hostname}}</h3>
+	  <br/>
 	  <b>CPU: </b>
 	  <div class="progress">
 	    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{s.cpu}}" aria-valuemin="0" aria-valuemax="{{s.max_cpu}}" style="width: {{ s.cpu / s.max_cpu * 100 | number:0 }}% ;">
