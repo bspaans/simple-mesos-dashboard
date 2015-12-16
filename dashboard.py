@@ -7,6 +7,8 @@ from flask import Flask
 from flask.ext.restful import Api, Resource
 
 MESOS=os.environ.get('MESOS', None)
+if MESOS is None:
+    raise Exception("Missing MESOS environment variable")
 
 class Node(object):
     def __init__(self, node_id):
@@ -35,8 +37,10 @@ class Node(object):
             'max_cpu': self.max_cpu, 'max_mem': self.max_mem}
 
 class NodeStatisticsResource(Resource):
-    def mesos_endpoint(self):
-        return MESOS + "/state.json"
+    def mesos_endpoint(self, mesos_host = None):
+        if mesos_host is None:
+            mesos_host = MESOS
+        return mesos_host + "/state.json"
 
     def process_frameworks(self, nodes, frameworks):
         for framework in frameworks:
@@ -58,11 +62,21 @@ class NodeStatisticsResource(Resource):
             nodes[node_id] = node
         return nodes
 
+    def get_master_from_payload(self, payload):
+        master = payload["leader"]
+        return "http://" + master[len("master@"):]
+
+
     def get(self):
         payload = requests.get(self.mesos_endpoint()).text
         json_payload = json.loads(payload)
+        master = self.get_master_from_payload(json_payload)
+        if master != MESOS:
+            payload = requests.get(self.mesos_endpoint(master)).text
+            json_payload = json.loads(payload)
         nodes = self.process_slaves(json_payload['slaves'])
-        return self.process_frameworks(nodes, json_payload['frameworks'])
+        node_breakdown = self.process_frameworks(nodes, json_payload['frameworks'])
+        return {"nodes": node_breakdown, "master": master}
 
 app = Flask(__name__)
 api = Api(app)

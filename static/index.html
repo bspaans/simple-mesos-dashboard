@@ -23,13 +23,14 @@
     <nav class='navbar navbar-default '>
       <div class='container-fluid'>
 	      <div class='navbar-header'>
-		<a class='navbar-brand' href='#'>Mesos Dashboard</a>
+  		<a class='navbar-brand' href='#'>Mesos Dashboard</a>
 	      </div>
 	</div>
 
     </nav>
 
     <div class='container'>
+      Mesos master at <a href='{{master}}'>{{master}}</a>
       <div class='row'>
         <div class='col-md-3 mesos-node' ng-repeat='s in stats'>
 	  <h3>{{s.hostname}}</h3>

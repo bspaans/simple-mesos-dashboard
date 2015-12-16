@@ -10,6 +10,7 @@ dashboard.config(['$httpProvider', function($httpProvider) {
 dashboard.controller('dashboardController', ['$scope', '$http', function($scope, $http) {
 
   $http.get('/api/nodes/stats').success(function(data) {
-    $scope.stats = data;
+    $scope.master = data.master;
+    $scope.stats = data.nodes;
   });
 }]);
