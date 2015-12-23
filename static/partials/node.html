@@ -1,0 +1,109 @@
+<div class='container'>
+<h2>{{statsService.stats[nodeId].hostname}}</h2>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-info" role="progressbar"
+        aria-valuenow="{{statsService.stats[nodeId].cpu}}"
+        aria-valuemin="0" 
+        aria-valuemax="{{statsService.stats[nodeId].max_cpu}}" 
+        style="width: {{ statsService.stats[nodeId].cpu / statsService.stats[nodeId].max_cpu * 100 | number:0 }}% ;">
+    <span class='cpu'>{{statsService.stats[nodeId].cpu | number: 2}} / {{statsService.stats[nodeId].max_cpu}}</span><p/>
+  </div>
+</div>
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar"
+        aria-valuenow="{{statsService.stats[nodeId].mem}}"
+        aria-valuemin="0" 
+        aria-valuemax="{{statsService.stats[nodeId].max_mem}}" 
+        style="width: {{ statsService.stats[nodeId].mem / statsService.stats[nodeId].max_mem * 100 | number:0 }}% ;">
+    <span class='mem'>{{statsService.stats[nodeId].mem | number: 2}} / {{statsService.stats[nodeId].max_mem}}</span><p/>
+  </div>
+</div>
+
+<h3>Running tasks</h3>
+<table class='table table-bordered table-striped'>
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>State</th>
+    <th>Framework</th>
+    <th>CPU</th>
+    <th>Mem</th>
+  </tr>
+</thead>
+<tbody>
+  <tr ng-repeat="t in statsService.stats[nodeId].tasks" ng-if="t.state=='TASK_RUNNING'">
+    <td>{{t.name}}</td>
+    <td>{{t.state}}</td>
+    <td><a href='#/framework/{{t.framework_id}}'>{{t.framework_id}}</a></td>
+    <td>
+      <div class="progress">
+        {{t.cpu}}
+        <div class="progress-bar progress-bar-info" role="progressbar"
+              aria-valuenow="{{t.cpu}}"
+              aria-valuemin="0" 
+              aria-valuemax="{{statsService.stats[nodeId].max_cpu}}" 
+              style="width: {{ t.cpu / statsService.stats[nodeId].max_cpu * 100 | number:0 }}% ;">
+        </div>
+      </div>
+    </td>
+    <td>
+      <div class="progress">
+        {{t.mem}}
+        <div class="progress-bar" role="progressbar"
+              aria-valuenow="{{t.mem}}"
+              aria-valuemin="0" 
+              aria-valuemax="{{statsService.stats[nodeId].max_mem}}" 
+              style="width: {{ t.mem / statsService.stats[nodeId].max_mem * 100 | number:0 }}% ;">
+        </div>
+      </div>
+    </td>
+  </tr>
+</tbody>
+</table>
+
+<h3>Completed tasks</h3>
+
+<table class='table table-bordered table-striped'>
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>State</th>
+    <th>Framework</th>
+    <th>CPU</th>
+    <th>Mem</th>
+  </tr>
+</thead>
+<tbody>
+  <tr ng-repeat="t in statsService.stats[nodeId].tasks" ng-if="t.state!='TASK_RUNNING'">
+    <td>{{t.name}}</td>
+    <td>{{t.state}}</td>
+    <td><a href='#/framework/{{t.framework_id}}'>{{t.framework_id}}</a></td>
+    <td>
+      <div class="progress">
+        {{t.cpu}}
+        <div class="progress-bar progress-bar-info" role="progressbar"
+              aria-valuenow="{{t.cpu}}"
+              aria-valuemin="0" 
+              aria-valuemax="{{statsService.stats[nodeId].max_cpu}}" 
+              style="width: {{ t.cpu / statsService.stats[nodeId].max_cpu * 100 | number:0 }}% ;">
+        </div>
+      </div>
+    </td>
+    <td>
+      <div class="progress">
+        {{t.mem}}
+        <div class="progress-bar" role="progressbar"
+              aria-valuenow="{{t.mem}}"
+              aria-valuemin="0" 
+              aria-valuemax="{{statsService.stats[nodeId].max_mem}}" 
+              style="width: {{ t.mem / statsService.stats[nodeId].max_mem * 100 | number:0 }}% ;">
+        </div>
+      </div>
+    </td>
+  </tr>
+</tbody>
+</table>
+
+</div>

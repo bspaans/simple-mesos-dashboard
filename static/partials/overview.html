@@ -1,0 +1,25 @@
+<div class='container'>
+  <div ng-show="statsService.master">
+    Mesos master at <a href='{{master}}'>{{statsService.master}}</a>
+  </div>
+  <div ng-show="!statsService.master">
+    Loading...
+  </div>
+  <div class='row'>
+    <div class='col-md-3 mesos-node' ng-repeat='s in statsService.stats'>
+      <h3><a href='#/nodes/{{s.id}}/'>{{s.hostname}}</a></h3>
+      <br/>
+      <b>CPU: </b>
+      <div class="progress">
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{s.cpu}}" aria-valuemin="0" aria-valuemax="{{s.max_cpu}}" style="width: {{ s.cpu / s.max_cpu * 100 | number:0 }}% ;">
+        <span class='cpu'>{{s.cpu | number: 2}} / {{s.max_cpu}}</span><p/>
+        </div>
+      </div>
+      <b>Mem: </b>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="{{s.mem}}" aria-valuemin="0" aria-valuemax="{{s.max_mem}}" style="width: {{ s.mem / s.max_mem * 100 | number:0 }}% ;">
+        <span class='memory'>{{s.mem}} / {{s.max_mem}}</span><p/>
+      </div>
+    </div>
+  </div>
+</div>

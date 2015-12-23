@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app='mesos-dashboard'>
+<html lang="en" ng-app='dashboardApp'>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,42 +17,27 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="/static/lib/angular/angular.js"></script>
+    <script src="/static/lib/angular-route/angular-route.js"></script>
   </head>
-  <body ng-controller='dashboardController'>
+  <body>
 
-    <nav class='navbar navbar-default '>
-      <div class='container-fluid'>
-	      <div class='navbar-header'>
-  		<a class='navbar-brand' href='#'>Mesos Dashboard</a>
-	      </div>
-	</div>
-
-    </nav>
-
-    <div class='container'>
-      Mesos master at <a href='{{master}}'>{{master}}</a>
-      <div class='row'>
-        <div class='col-md-3 mesos-node' ng-repeat='s in stats'>
-	  <h3>{{s.hostname}}</h3>
-	  <br/>
-	  <b>CPU: </b>
-	  <div class="progress">
-	    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{s.cpu}}" aria-valuemin="0" aria-valuemax="{{s.max_cpu}}" style="width: {{ s.cpu / s.max_cpu * 100 | number:0 }}% ;">
-		  <span class='cpu'>{{s.cpu | number: 2}} / {{s.max_cpu}}</span><p/>
-	    </div>
-	  </div>
-	  <b>Mem: </b>
-	  <div class="progress">
-	    <div class="progress-bar" role="progressbar" aria-valuenow="{{s.mem}}" aria-valuemin="0" aria-valuemax="{{s.max_mem}}" style="width: {{ s.mem / s.max_mem * 100 | number:0 }}% ;">
-		  <span class='memory'>{{s.mem}} / {{s.max_mem}}</span><p/>
-	    </div>
-	  </div>
-	</div>
+  <nav class='navbar navbar-default '>
+    <div class='container-fluid'>
+      <div class='navbar-header'>
+      <a class='navbar-brand' href='#/'>Mesos Dashboard</a>
       </div>
+      <ul class="nav navbar-nav" ng-controller="navController">
+        <li ng-class="{'active': pageService.page == 'overview'}"><a href="#/overview">Overview </a></li>
+        <li ng-class="{'active': pageService.page == 'frameworks'}"><a href="#/frameworks">Frameworks </a></li>
+        <li ng-class="{'active': pageService.page == 'nodes'}"><a href="#/nodes">Nodes </a></li>
+      </ul>
     </div>
+  </nav>
 
-    <script src="/static/lib/jquery/jquery.js"></script>
-    <script src="/static/lib/bootstrap/bootstrap.js"></script>
-    <script src="/static/controllers.js"></script>
+  <div ng-view></div>
+
+  <script src="/static/lib/jquery/jquery.js"></script>
+  <script src="/static/lib/bootstrap/bootstrap.js"></script>
+  <script src="/static/controllers.js"></script>
   </body>
 </html>
