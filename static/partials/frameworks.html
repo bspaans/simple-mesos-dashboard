@@ -12,10 +12,12 @@
 </thead>
 <tbody>
   <tr ng-repeat="f in statsService.frameworks">
-    <td>{{f.id}}</td>
+    <td><a href='#/frameworks/{{f.id}}'>{{f.id}}</a></td>
     <td>{{f.name}}</td>
     <td>{{f.hostname}}</td>
-    <td>{{f.active}}</td>
+    <td>
+    <span ng-class="{'active-framework': f.active}">&bull;</span> 
+    </td>
   </tr>
 </tbody>
 </table>

@@ -1,0 +1,35 @@
+<div class='container'>
+<h2>
+    <span ng-class="{'active-framework': statsService.frameworks[frameworkId].active}">&bull;</span> 
+    {{statsService.frameworks[frameworkId].name}}</h2>
+
+<div> 
+Framework is running on host: 
+<b>{{statsService.frameworks[frameworkId].hostname}}</b>
+</div>
+<p/>
+
+<div class='row'>
+    <table class='table table-bordered table-striped'>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>State</th>
+            <th>CPU</th>
+            <th>Mem</th>
+            <th>Node</th>
+        </tr>
+        </thead>
+    <tbody>
+        <tr ng-repeat="t in statsService.getFrameworkTasks(frameworkId)">
+
+            <td>{{t.name}}</td>
+            <td>{{t.state}}</td>
+            <td>{{t.cpu}}</td>
+            <td>{{t.mem}}</td>
+            <td><a href='#/nodes/{{t.node_id}}'>{{statsService.stats[t.node_id].hostname}}</a></td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+</div>

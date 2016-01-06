@@ -53,6 +53,8 @@ class Nodes(object):
         self.nodes = nodes
 
     def get_by_id(self, node_id):
+        if node_id not in self.nodes:
+            return None
         return self.nodes[node_id]
 
     def to_dict(self):
@@ -81,7 +83,9 @@ class Framework(object):
         return {"id": self.framework_id,
                 "name": self.name,
                 "hostname": self.hostname,
-                "active": self.active}
+                "active": self.active,
+                "tasks": map(lambda t: t.task_id, self.tasks.values())
+		}
 
 class Task(object):
     def __init__(self, framework, task_id, name, state):
@@ -161,8 +165,9 @@ class MesosResponseParser(object):
 
             slave_id = task["slave_id"]
             node = self.nodes.get_by_id(slave_id)
-            node.add_task(t)
-            t.set_node(node)
+            if node is not None:
+                node.add_task(t)
+                t.set_node(node)
             result[task_id] = t
         return result
 
@@ -172,8 +177,10 @@ class NodeStatisticsResource(Resource):
             mesos_host = MESOS
         return mesos_host + "/state.json"
 
-    def _get_master_from_payload(self, payload):
-        master = payload["leader"]
+    def _get_master_from_payload(self, payload, key):
+        if key not in payload:
+            return None
+        master = payload[key]
         return "http://" + master[len("master@"):]
 
     def get(self):
@@ -183,8 +190,12 @@ class NodeStatisticsResource(Resource):
             with open("tests/test_response.json") as f:
                 payload = f.read()
         json_payload = json.loads(payload)
-        master = self._get_master_from_payload(json_payload)
-        if master != MESOS:
+        master = self._get_master_from_payload(json_payload, "master")
+        if master is None:
+            master = self._get_master_from_payload(json_payload, "leader")
+        if master is None:
+            return 503
+        if master != MESOS and not TEST_MODE:
             payload = requests.get(self._mesos_endpoint(master)).text
             json_payload = json.loads(payload)
         parser = MesosResponseParser()
@@ -193,7 +204,12 @@ class NodeStatisticsResource(Resource):
         frameworks = {}
         for id_, f in parser.frameworks.iteritems():
             frameworks[id_] = f.to_dict()
-        return {"nodes": node_breakdown, "master": master, "frameworks": frameworks}
+	
+        taskToNodes = {}
+        for n in parser.nodes.nodes.itervalues():
+            for t in n.tasks:
+                taskToNodes[t.task_id] = n.node_id;
+        return {"nodes": node_breakdown, "master": master, "frameworks": frameworks, "tasks": taskToNodes}
 
 app = Flask(__name__)
 api = Api(app)

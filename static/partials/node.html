@@ -36,7 +36,7 @@
   <tr ng-repeat="t in statsService.stats[nodeId].tasks" ng-if="t.state=='TASK_RUNNING'">
     <td>{{t.name}}</td>
     <td>{{t.state}}</td>
-    <td><a href='#/framework/{{t.framework_id}}'>{{t.framework_id}}</a></td>
+    <td><a href='#/frameworks/{{t.framework_id}}'>{{t.framework_id}}</a></td>
     <td>
       <div class="progress">
         {{t.cpu}}
@@ -79,7 +79,7 @@
   <tr ng-repeat="t in statsService.stats[nodeId].tasks" ng-if="t.state!='TASK_RUNNING'">
     <td>{{t.name}}</td>
     <td>{{t.state}}</td>
-    <td><a href='#/framework/{{t.framework_id}}'>{{t.framework_id}}</a></td>
+    <td><a href='#/frameworks/{{t.framework_id}}'>{{t.framework_id}}</a></td>
     <td>
       <div class="progress">
         {{t.cpu}}
