@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM ubuntu:12.04
 
 RUN apt-get install -y python-setuptools
 RUN easy_install pip
